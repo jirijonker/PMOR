@@ -9,7 +9,7 @@ using namespace std;
 #define Close 16
 #define LatchClossed1 4 
 #define LatchClossed2 5
-#define Solenoid1 21
+#define Solenoid1 22
 #define Solenoid2 30
 
 	
@@ -24,13 +24,13 @@ int main()
 	pinMode(LatchClossed2, INPUT);
 	pinMode(Solenoid1, OUTPUT);
 	pinMode(Solenoid2, OUTPUT);
-	bool Latch1 = false;
-	bool Latch2 = false;
 	
 	while (true)
 	{
 		if (digitalRead(Open) == 1)
 		{
+			//Latch1 = false;
+			//Latch2 = false;
 					//ontgrendel
 			digitalWrite(Solenoid1, 1);
 			cout << "Solenoid1 open" << endl;
@@ -64,48 +64,38 @@ int main()
 		{
 			//sluiten
 			digitalWrite(Solenoid1, 1);
-			cout << "Solenoid1 aan" << endl;
+			cout << "Solenoid1 open" << endl;
 			digitalWrite(Solenoid2, 1);
-			cout << "Solenoid2 aan" << endl;
-			
-			while (Latch1 == false || Latch2 == false)
+			cout << "Solenoid2 open" << endl;
+			for(int i = 0; i < 1; ++i)
 			{
-				if(Latch1 == false)
-				{
-					digitalWrite(Servo1, 1);
-					delay(1.5);
-					digitalWrite(Servo1, 0);
-					delay(18.5);
-					if (digitalRead(LatchClossed1) == 1)
-					{
-						cout << "Luikje1 dicht" << endl;
-						digitalWrite(Solenoid1, 0);
-						cout << "Solenoid1 uit" << endl;
-						cout << "Servo1 uit" << endl;
-						Latch1 = true;
-						delay(500);
-					}
-				}
-				if(Latch2 == false)
-				{
-					digitalWrite(Servo2, 1);
-					delay(1);
-					digitalWrite(Servo2, 0);
-					delay(18);
-					if (digitalRead(LatchClossed2) == 1)
-					{
-						cout << "Luikje2 dicht" << endl;
-						digitalWrite(Solenoid2, 0);
-						cout << "Solenoid2 uit" << endl;
-						cout << "Servo2 uit" << endl;
-						Latch2 = true;
-						delay(500);
-					}
-				}				
-
+				digitalWrite(Servo1, 1);
+				delay(1.5);
+				digitalWrite(Servo1, 0);
+				delay(18.5);
+			}		
+			while (digitalRead(LatchClossed1) == 0)
+			{
+				digitalWrite(Solenoid1, 1);
 			}
-			cout << "Beide luikjes zijn dicht" << endl;
-			
+			digitalWrite(Solenoid1, 0);
+			cout << "Luikje1 dicht" << endl;
+			cout << "Solenoid1 uit" << endl;
+			for(int i = 0; i < 1; ++i)
+			{
+				digitalWrite(Servo2, 1);
+				delay(2);
+				digitalWrite(Servo2, 0);
+				delay(18);
+			}
+			while (digitalRead(LatchClossed2) == 0)
+			{
+				digitalWrite(Solenoid2, 1);
+			}
+			digitalWrite(Solenoid2, 0);
+			cout << "Solenoid2 uit" << endl;
+			cout << "Luikje2 dicht" << endl;
+		cout << "Beide luikjes zijn dicht" << endl;
 		}
 	}
 	return 0;
