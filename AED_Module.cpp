@@ -29,8 +29,6 @@ int main()
 	{
 		if (digitalRead(Open) == 1)
 		{
-			//Latch1 = false;
-			//Latch2 = false;
 					//ontgrendel
 			digitalWrite(Solenoid1, 1);
 			cout << "Solenoid1 open" << endl;
